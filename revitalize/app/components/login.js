@@ -3,6 +3,27 @@ import React from "react";
 import { useState } from "react";
 
 export default function LoginForm() {
+  const { user, gitHubSignIn, firebaseSignOut } = useUserAuth();
+
+  async function handleSignIn() {
+    try {
+      await gitHubSignIn();
+      console.log(user);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function handleSignOut() {
+    try {
+      await firebaseSignOut();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  console.log(user);
+
   // States for registration
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -119,6 +140,15 @@ export default function LoginForm() {
 
   return (
     <div className="form">
+      {user ? (
+        <div>
+          {user.displayName} | {user.email}
+          <button onClick={handleSignOut}>Sign Out</button>
+        </div>
+      ) : (
+        <button onClick={handleSignIn}>Sign In</button>
+      )}
+
       <div>
         <h1>User Registration</h1>
       </div>
